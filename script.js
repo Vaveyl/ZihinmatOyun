@@ -76,14 +76,6 @@ document.addEventListener("keydown", (event) => {
         playerMove();
     }
 });
-document.getElementById("makeMoveButton").addEventListener("click", function() {
-    makeMove();  // Burada hamle yapma fonksiyonunu çağırıyoruz
-});
 
-function makeMove() {
-    // Hamle yapma fonksiyonu: buraya oyunla ilgili işlem yazılacak
-    console.log("Hamle yapıldı!");
-    // Örneğin burada hamlenin oyun kurallarına göre işlemi yapılacak
-}
 // Başlat
 startGame();
