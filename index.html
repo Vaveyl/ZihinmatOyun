@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihinmat</title>
+    <title>Zihinmat Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Zihinmat Oyunu</h1>
-    <div id="game-board"></div>
-    <p>Hamle yapmak için Enter tuşuna basın.</p>
+
+    <!-- Oyun Ekranı -->
+    <div id="game-board">
+        <p id="message">Oyuna Başlayın!</p>
+    </div>
+
+    <!-- Mobil Uyumluluk İçin Buton -->
+    <button id="makeMoveButton">Hamle Yap</button>
+
     <script src="script.js"></script>
 </body>
 </html>
