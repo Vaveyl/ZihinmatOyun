@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Zihinmat Oyunu</h1>
-        <div class="input-section">
-            <input type="number" id="number-input" placeholder="Bir sayı girin">
-            <button id="submit-button">Gönder</button>
+    <h1>Zihinmat Oyunu</h1>
+    <div id="game-container">
+        <div id="instructions">
+            <p>Sırayla bir sayı söyleyin. <strong>Hata sınırı: 3</strong>, pas geçme hakkınız var.</p>
         </div>
-        <div class="game-info">
-            <p id="current-number">Şu anki sayı: <strong>Henüz Başlamadı</strong></p>
-            <p id="game-message"></p>
+        <div id="controls">
+            <input type="text" id="number-input" placeholder="Bir sayı girin veya 'Pas' yazın">
+            <button id="submit-btn">Gönder</button>
         </div>
-        <div class="game-log">
-            <h3>Hamle Geçmişi</h3>
-            <ul id="log"></ul>
+        <div id="status">
+            <p id="game-log">Oyun başlıyor...</p>
+        </div>
+        <div id="player-info">
+            <p>Hata Sayısı: <span id="error-count">0</span> / 3</p>
         </div>
     </div>
     <script src="script.js"></script>
