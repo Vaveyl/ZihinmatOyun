@@ -1,73 +1,69 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const board = document.getElementById("game-board");
-    const button = document.getElementById("next-move");
-    let currentPlayer = 'X';
-    let cells = [];
+let currentNumber = null;
+let gameLog = [];
+const bannedNumbers = [1];
+let wrongAttempts = 0;
 
-    // Oyun tahtasını oluştur
-    function createBoard() {
-        board.innerHTML = ''; // Temizle
-        cells = []; // Hücreleri sıfırla
-        for (let i = 0; i < 9; i++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            cell.addEventListener('click', makeMove, { once: true });
-            board.appendChild(cell);
-            cells.push(cell);
+// DOM Elements
+const playerInput = document.getElementById('player-input');
+const submitButton = document.getElementById('submit-button');
+const currentNumberDisplay = document.getElementById('current-number');
+const gameMessage = document.getElementById('game-message');
+const gameLogElement = document.getElementById('game-log');
+
+// Helper Functions
+function isPrime(num) {
+    if (num <= 1) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
+
+function updateGameLog(message) {
+    gameLog.push(message);
+    const logItem = document.createElement('li');
+    logItem.textContent = message;
+    gameLogElement.appendChild(logItem);
+}
+
+// Game Logic
+submitButton.addEventListener('click', () => {
+    const input = parseInt(playerInput.value);
+    if (isNaN(input)) {
+        gameMessage.textContent = "Geçerli bir sayı giriniz!";
+        return;
+    }
+
+    // İlk hamle
+    if (currentNumber === null) {
+        if (isPrime(input)) {
+            gameMessage.textContent = "Oyun asal sayı ile başlayamaz!";
+            return;
         }
+        currentNumber = input;
+        currentNumberDisplay.innerHTML = `Şu anki sayı: <strong>${currentNumber}</strong>`;
+        gameMessage.textContent = "Oyun başladı! Çarpan veya kat giriniz.";
+        updateGameLog(`İlk sayı: ${currentNumber}`);
+        playerInput.value = "";
+        return;
     }
 
-    // Hücreye tıklama olayını işleme
-    function makeMove(e) {
-        e.target.textContent = currentPlayer;
-        if (checkWinner()) {
-            alert(`${currentPlayer} kazandı!`);
-            resetGame();
-        } else if (isBoardFull()) {
-            alert('Beraberlik!');
-            resetGame();
-        } else {
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Sıradaki oyuncuya geç
+    // Kurallara Uygunluk Kontrolü
+    if (input % currentNumber !== 0 && currentNumber % input !== 0) {
+        wrongAttempts++;
+        gameMessage.textContent = `Hatalı hamle! Toplam yanlış: ${wrongAttempts}`;
+        if (wrongAttempts >= 3) {
+            gameMessage.textContent = "Üç hatalı hamle yaptınız, kaybettiniz!";
+            submitButton.disabled = true;
         }
+        return;
     }
 
-    // Kazananı kontrol et
-    function checkWinner() {
-        const winPatterns = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        return winPatterns.some(pattern => {
-            const [a, b, c] = pattern;
-            return (
-                cells[a].textContent &&
-                cells[a].textContent === cells[b].textContent &&
-                cells[a].textContent === cells[c].textContent
-            );
-        });
-    }
-
-    // Tüm hücreler dolu mu kontrol et
-    function isBoardFull() {
-        return cells.every(cell => cell.textContent !== '');
-    }
-
-    // Oyunu sıfırla
-    function resetGame() {
-        setTimeout(createBoard, 1000);
-        currentPlayer = 'X'; // Oyuncuyu başa al
-    }
-
-    // Yeni hamle butonuna basıldığında tahtayı sıfırla
-    button.addEventListener('click', createBoard);
-
-    // Oyunu başlat
-    createBoard();
+    // Doğru hamle
+    currentNumber = input;
+    currentNumberDisplay.innerHTML = `Şu anki sayı: <strong>${currentNumber}</strong>`;
+    gameMessage.textContent = "Sıradaki hamle için sayı giriniz.";
+    updateGameLog(`Yeni sayı: ${currentNumber}`);
+    playerInput.value = "";
 });
+
