@@ -3,30 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihinmat</title>
+    <title>Zihinmat Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
+    <div class="container">
         <h1>Zihinmat Oyunu</h1>
-        <p>Oyuna başlamak için aşağıdaki kutucuğa bir sayı yazıp "Gönder" butonuna basın.</p>
-        
-        <div class="game-input">
-            <input type="number" id="player-input" placeholder="Bir sayı girin">
+        <div class="input-section">
+            <input type="number" id="number-input" placeholder="Bir sayı girin">
             <button id="submit-button">Gönder</button>
         </div>
-        
-        <div class="game-status">
+        <div class="game-info">
             <p id="current-number">Şu anki sayı: <strong>Henüz Başlamadı</strong></p>
-            <p id="game-message">Oyun mesajları burada görünecek.</p>
+            <p id="game-message"></p>
         </div>
-
-        <div class="game-board">
-            <p>Oyuncu sırası ve hareketler buraya yazılacak:</p>
-            <ul id="game-log"></ul>
+        <div class="game-log">
+            <h3>Hamle Geçmişi</h3>
+            <ul id="log"></ul>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
