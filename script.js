@@ -1,69 +1,57 @@
-// Oyun Durumları
-let usedNumbers = [];
-let errorCount = 0;
-const maxErrors = 3;
+let players = [];
+let currentPlayerIndex = 0;
+let lastNumber = null;
+let invalidAttempts = {};
+let gameActive = false;
 
-// DOM Elementleri
-const input = document.getElementById("number-input");
-const submitBtn = document.getElementById("submit-btn");
-const gameLog = document.getElementById("game-log");
-const errorCountDisplay = document.getElementById("error-count");
+document.getElementById('startButton').addEventListener('click', startGame);
+document.getElementById('submitButton').addEventListener('click', submitNumber);
 
-// Yardımcı Fonksiyonlar
-function isPrime(num) {
-    if (num <= 1) return false;
-    for (let i = 2; i <= Math.sqrt(num); i++) {
-        if (num % i === 0) return false;
-    }
-    return true;
+function startGame() {
+    players = prompt("Oyuncu sayısını girin (en az 2):").split(',').map(p => p.trim());
+    currentPlayerIndex = 0;
+    lastNumber = null;
+    invalidAttempts = {};
+    gameActive = true;
+
+    document.getElementById('players').innerHTML = players.join(', ');
+    document.getElementById('message').textContent = "Oyun başladı! İlk sayı, asal olmayan bir sayı olmalı.";
 }
 
-function logMessage(message) {
-    gameLog.innerText = message;
-}
-
-// Ana Oyun İşlevi
-function playGame() {
-    const inputValue = input.value.trim().toLowerCase();
-
-    if (inputValue === "pas") {
-        logMessage("Pas geçtiniz! Sıra diğer oyuncuda.");
-        input.value = "";
+function submitNumber() {
+    if (!gameActive) {
         return;
     }
 
-    const number = parseInt(inputValue, 10);
+    const input = document.getElementById('numberInput');
+    const number = parseInt(input.value);
 
-    if (isNaN(number)) {
-        logMessage("Lütfen geçerli bir sayı girin!");
+    // 1 sayısı yasak
+    if (number === 1) {
+        endGame(`${players[currentPlayerIndex]} oyundan çıktı!`);
         return;
     }
 
-    if (usedNumbers.includes(number)) {
-        errorCount++;
-        logMessage(`Bu sayı daha önce söylendi! Hata sayınız: ${errorCount}`);
-        if (errorCount >= maxErrors) {
-            logMessage("Çok fazla hata yaptınız! Oyun sona erdi.");
-            submitBtn.disabled = true;
+    // Asal olmayan sayı kontrolü
+    if (lastNumber === null || (number % lastNumber === 0 || lastNumber % number === 0)) {
+        lastNumber = number;
+        input.value = '';
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+        document.getElementById('message').textContent = `${players[currentPlayerIndex]}'in sırası. Son sayı: ${lastNumber}`;
+    } else {
+        invalidAttempts[players[currentPlayerIndex]] = (invalidAttempts[players[currentPlayerIndex]] || 0) + 1;
+
+        if (invalidAttempts[players[currentPlayerIndex]] >= 3) {
+            endGame(`${players[currentPlayerIndex]} oyundan çıktı!`);
+        } else {
+            document.getElementById('message').textContent = `${players[currentPlayerIndex]} hatalı sayı söyledi! ${3 - invalidAttempts[players[currentPlayerIndex]]} hakkı kaldı.`;
         }
-        return;
     }
-
-    if (isPrime(number)) {
-        errorCount++;
-        logMessage(`Asal bir sayı söylediniz! Hata sayınız: ${errorCount}`);
-        if (errorCount >= maxErrors) {
-            logMessage("Çok fazla hata yaptınız! Oyun sona erdi.");
-            submitBtn.disabled = true;
-        }
-        return;
-    }
-
-    usedNumbers.push(number);
-    logMessage(`Geçerli sayı: ${number}. Sıra diğer oyuncuda.`);
-    errorCountDisplay.innerText = errorCount;
-    input.value = "";
 }
 
-// Olay Dinleyiciler
-submitBtn.addEventListener("click", playGame);
+function endGame(message) {
+    gameActive = false;
+    document.getElementById('message').textContent = message;
+    document.getElementById('numberInput').disabled = true;
+    document.getElementById('submitButton').disabled = true;
+}
