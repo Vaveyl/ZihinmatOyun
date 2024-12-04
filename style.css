@@ -1,70 +1,40 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
     margin: 0;
     padding: 0;
+    background-color: #f9f9f9;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.game-container {
+.container {
     background: #ffffff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
     text-align: center;
-    width: 90%;
-    max-width: 500px;
 }
 
 h1 {
-    margin: 0 0 20px;
-    color: #333;
+    font-size: 24px;
+    color: #333333;
 }
 
-p {
-    color: #555;
+.input-section {
+    margin: 15px 0;
 }
 
-.game-input {
-    margin: 20px 0;
+#number-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
 }
 
-#player-input {
-    width: calc(100% - 100px);
-    padding: 10px;
-    margin-right: 5px;
-    font-size: 16px;
-}
-
-button {
-    padding: 10px;
-    font-size: 16px;
+#submit-button {
     background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.game-status {
-    margin-top: 20px;
-}
-
-#game-log {
-    list-style-type: none;
-    padding: 0;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background: #f9f9f9;
-}
+   
