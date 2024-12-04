@@ -1,19 +1,32 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihinmat Oyunu</title>
+    <title>Zihinmat</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Zihinmat Oyunu</h1>
-    <div class="game">
-        <div id="game-board">
-            <!-- Oyun tahtası hücreleri burada görünecek -->
+    <div class="game-container">
+        <h1>Zihinmat Oyunu</h1>
+        <p>Oyuna başlamak için aşağıdaki kutucuğa bir sayı yazıp "Gönder" butonuna basın.</p>
+        
+        <div class="game-input">
+            <input type="number" id="player-input" placeholder="Bir sayı girin">
+            <button id="submit-button">Gönder</button>
         </div>
-        <button id="next-move">Yeni Hamle</button>
+        
+        <div class="game-status">
+            <p id="current-number">Şu anki sayı: <strong>Henüz Başlamadı</strong></p>
+            <p id="game-message">Oyun mesajları burada görünecek.</p>
+        </div>
+
+        <div class="game-board">
+            <p>Oyuncu sırası ve hareketler buraya yazılacak:</p>
+            <ul id="game-log"></ul>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
