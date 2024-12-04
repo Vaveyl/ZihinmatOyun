@@ -1,53 +1,69 @@
-let currentNumber = null;
-let gameLog = [];
+// Oyun Durumları
+let usedNumbers = [];
+let errorCount = 0;
+const maxErrors = 3;
 
-const numberInput = document.getElementById('number-input');
-const submitButton = document.getElementById('submit-button');
-const currentNumberDisplay = document.getElementById('current-number');
-const gameMessage = document.getElementById('game-message');
-const logContainer = document.getElementById('log');
+// DOM Elementleri
+const input = document.getElementById("number-input");
+const submitBtn = document.getElementById("submit-btn");
+const gameLog = document.getElementById("game-log");
+const errorCountDisplay = document.getElementById("error-count");
 
-// Çarpan veya kat kontrolü
-function isMultipleOrDivisor(newNumber, baseNumber) {
-    return newNumber % baseNumber === 0 || baseNumber % newNumber === 0;
+// Yardımcı Fonksiyonlar
+function isPrime(num) {
+    if (num <= 1) return false;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
 }
 
-// Hamle geçmişini güncelle
-function updateGameLog(message) {
-    const logItem = document.createElement('li');
-    logItem.textContent = message;
-    logContainer.appendChild(logItem);
+function logMessage(message) {
+    gameLog.innerText = message;
 }
 
-// "Gönder" butonu tıklandığında çalışacak işlev
-submitButton.addEventListener('click', () => {
-    const inputNumber = parseInt(numberInput.value, 10);
+// Ana Oyun İşlevi
+function playGame() {
+    const inputValue = input.value.trim().toLowerCase();
 
-    // Geçersiz sayı kontrolü
-    if (isNaN(inputNumber) || inputNumber <= 1) {
-        gameMessage.textContent = "Lütfen 1'den büyük bir sayı girin!";
+    if (inputValue === "pas") {
+        logMessage("Pas geçtiniz! Sıra diğer oyuncuda.");
+        input.value = "";
         return;
     }
 
-    // İlk sayı seçimi
-    if (currentNumber === null) {
-        currentNumber = inputNumber;
-        currentNumberDisplay.innerHTML = `Şu anki sayı: <strong>${currentNumber}</strong>`;
-        gameMessage.textContent = "Oyun başladı! Şimdi sıra sizde.";
-        updateGameLog(`Oyun ${currentNumber} ile başladı.`);
-    } 
-    // Çarpan veya kat kontrolü
-    else if (isMultipleOrDivisor(inputNumber, currentNumber)) {
-        currentNumber = inputNumber;
-        currentNumberDisplay.innerHTML = `Şu anki sayı: <strong>${currentNumber}</strong>`;
-        gameMessage.textContent = "Hamle başarılı!";
-        updateGameLog(`Yeni sayı: ${currentNumber}`);
-    } 
-    // Geçersiz hamle
-    else {
-        gameMessage.textContent = "Girilen sayı geçerli değil! Aynı çarpan veya kat kuralına uymalı.";
+    const number = parseInt(inputValue, 10);
+
+    if (isNaN(number)) {
+        logMessage("Lütfen geçerli bir sayı girin!");
+        return;
     }
 
-    numberInput.value = '';
-    numberInput.focus();
-});
+    if (usedNumbers.includes(number)) {
+        errorCount++;
+        logMessage(`Bu sayı daha önce söylendi! Hata sayınız: ${errorCount}`);
+        if (errorCount >= maxErrors) {
+            logMessage("Çok fazla hata yaptınız! Oyun sona erdi.");
+            submitBtn.disabled = true;
+        }
+        return;
+    }
+
+    if (isPrime(number)) {
+        errorCount++;
+        logMessage(`Asal bir sayı söylediniz! Hata sayınız: ${errorCount}`);
+        if (errorCount >= maxErrors) {
+            logMessage("Çok fazla hata yaptınız! Oyun sona erdi.");
+            submitBtn.disabled = true;
+        }
+        return;
+    }
+
+    usedNumbers.push(number);
+    logMessage(`Geçerli sayı: ${number}. Sıra diğer oyuncuda.`);
+    errorCountDisplay.innerText = errorCount;
+    input.value = "";
+}
+
+// Olay Dinleyiciler
+submitBtn.addEventListener("click", playGame);
