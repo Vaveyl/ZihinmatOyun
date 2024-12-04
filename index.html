@@ -1,27 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihinmat Oyunu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Zihimmat Oyunu</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Zihinmat Oyunu</h1>
-    <div id="game-container">
-        <div id="instructions">
-            <p>Sırayla bir sayı söyleyin. <strong>Hata sınırı: 3</strong>, pas geçme hakkınız var.</p>
-        </div>
-        <div id="controls">
-            <input type="text" id="number-input" placeholder="Bir sayı girin veya 'Pas' yazın">
-            <button id="submit-btn">Gönder</button>
-        </div>
-        <div id="status">
-            <p id="game-log">Oyun başlıyor...</p>
-        </div>
-        <div id="player-info">
-            <p>Hata Sayısı: <span id="error-count">0</span> / 3</p>
-        </div>
+    <div class="game-container">
+        <h1>Zihimmat Oyunu</h1>
+        <div id="players"></div>
+        <input type="number" id="numberInput" placeholder="Sayıyı girin" min="1" max="100">
+        <button id="submitButton">Sayıyı Söyle</button>
+        <div id="message"></div>
+        <button id="startButton">Oyunu Başlat</button>
     </div>
     <script src="script.js"></script>
 </body>
