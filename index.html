@@ -1,20 +1,161 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihimmat Oyunu</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Kat ve Böl Kontrolü</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #output {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #valueDisplay {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="game-container">
-        <h1>Zihimmat Oyunu</h1>
-        <div id="players"></div>
-        <input type="number" id="numberInput" placeholder="Sayıyı girin" min="1" max="100">
-        <button id="submitButton">Sayıyı Söyle</button>
-        <div id="message"></div>
-        <button id="startButton">Oyunu Başlat</button>
-    </div>
-    <script src="script.js"></script>
+    <form id="myForm">
+        <label for="numberInput">Sayı Girin:</label>
+        <input type="number" id="numberInput" name="numberInput" required>
+        <button type="submit">Gönder</button>
+        <button type="button" id="passButton">Pas</button>
+    </form>
+
+    <h2>Sonuç:</h2>
+    <div id="output" aria-live="polite"></div>
+    <div id="valueDisplay"></div>
+
+    <script>
+        let previousNumbers = [];
+        let hataSayisi = 0;
+        let pasSayisi = 0;
+        let firstNumber = Math.floor(Math.random() * (51 - 2)) + 2; // 2 ile 101 arasında rastgele sayı
+        previousNumbers.push(firstNumber);
+
+        document.getElementById('output').innerHTML = `Oyun başladı! İlk sayı: ${firstNumber}`;
+
+        document.getElementById('myForm').onsubmit = function (event) {
+            event.preventDefault();
+
+            const newNumber = parseFloat(document.getElementById('numberInput').value);
+            let resultMessage = '';
+
+            if (previousNumbers.includes(newNumber)) {
+                hataSayisi += 1;
+                resultMessage = `${newNumber}, daha önce girilmiş. Hata sayısı: ${hataSayisi}`;
+            } else {
+                previousNumbers.push(newNumber);
+
+                if (previousNumbers.length > 1) {
+                    const previousNumber = previousNumbers[previousNumbers.length - 2];
+                    if (newNumber % previousNumber === 0) {
+                        resultMessage = `${newNumber}, ${previousNumber}'in katıdır.`;
+                    } else if (previousNumber % newNumber === 0) {
+                        resultMessage = `${newNumber}, ${previousNumber}'in bölenidir.`;
+                    } else {
+                        resultMessage = `${newNumber}, ne ${previousNumber}'in katı ne de bölenidir.`;
+                        hataSayisi += 1;
+                    }
+                } else {
+                    resultMessage = `Bu ilk giriş: ${newNumber}`;
+                }
+            }
+
+            document.getElementById('output').innerHTML += `<p>${resultMessage}</p>`;
+            document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
+
+            if (hataSayisi >= 3) {
+                endGame();
+            }
+        };
+
+        document.getElementById('passButton').onclick = function () {
+            pasSayisi += 1;
+            document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
+
+            if (pasSayisi > 3) {
+                hataSayisi += 1;
+                document.getElementById('output').innerHTML += '<p style="color:red;">Her pas için hata sayısı bir arttı!</p>';
+            }
+
+            if (hataSayisi >= 3) {
+                endGame();
+            }
+        };
+
+        function endGame() {
+            document.getElementById('output').innerHTML += '<p style="color:red;">Oyun Bitti!</p>';
+            document.getElementById('myForm').reset();
+            document.getElementById('numberInput').disabled = true;
+            document.getElementById('passButton').disabled = true;
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
+        }
+    </script>
 </body>
+
 </html>
