@@ -164,6 +164,9 @@
 
         function endGame() {
             document.getElementById('output').innerHTML += '<p style="color:red;">Oyun Bitti!</p>';
+                        document.getElementById('myForm').reset();
+            document.getElementById('numberInput').disabled = true;
+            document.getElementById('passButton').disabled = true;
 
             setTimeout(() => {
                 window.location.reload();
