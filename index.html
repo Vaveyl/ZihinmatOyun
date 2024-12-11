@@ -1,129 +1,135 @@
 <!DOCTYPE html>
 <html lang="tr">
-<header>
-    <img src="Zihinmat.jpg" alt="Zihinmat Logo" id="logo">
-</header>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zihinmat</title>
+    <style>
+        /* Genel Sayfa Stilleri */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+            /* Mobil cihazlar için boşluk */
+            box-sizing: border-box;
+        }
 
-<body>
-    <h1>
-        Zihinmat'a Hoşgeldiniz
-    </h1>
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-</body>
-<style>
-    #logo {
-        max-width: 100%;
-        /* Ekrana sığması için */
-        height: auto;
-        /* Oranlarını korur */
-        display: block;
-        margin: 0 auto;
-    }
+        /* Logo Stilleri */
+        #logo {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
 
-    #logo {
-        width: 80%;
-        /* Logonun genişliği ekranın %80'i kadar olur */
-        max-width: 400px;
-        /* Masaüstü için maksimum genişlik */
-        height: auto;
-        /* Oranları korur */
-        margin: 0 auto;
-    }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+        }
 
-    header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
+        /* Form Stilleri */
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
 
-    #logo {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        margin: 0;
-    }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
 
-    h1 {
-        color: #333;
-    }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
 
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        margin: 0;
-    }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            width: 48%;
+        }
 
-    h2 {
-        color: #333;
-    }
+        button:hover {
+            background-color: #218838;
+        }
 
-    form {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
+        #output {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow-wrap: break-word;
+        }
 
-    label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
+        #valueDisplay {
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
 
-    input[type="number"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        font-size: 16px;
-    }
+        /* Mobil Uyum için Media Query */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
 
-    button {
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-        margin-right: 10px;
-    }
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
 
-    button:hover {
-        background-color: #218838;
-    }
-
-    #output {
-        background-color: #e9ecef;
-        padding: 15px;
-        border-radius: 4px;
-        width: 100%;
-        max-width: 400px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    #valueDisplay {
-        margin-top: 10px;
-        font-weight: bold;
-    }
-</style>
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <header>
+        <img src="Zihinmat.jpg" alt="Zihinmat Logo" id="logo">
+    </header>
+
+    <h1>Zihinmat'a Hoşgeldiniz</h1>
+
     <form id="myForm">
         <label for="numberInput">Sayı Girin:</label>
         <input type="number" id="numberInput" name="numberInput" required>
@@ -132,8 +138,8 @@
     </form>
 
     <h2>Sonuç:</h2>
-    <div id="output" aria-live="polite"></div>
-    <div id="valueDisplay"></div>
+    <div id="output" aria-live="polite">Oyun başladı! İlk sayı: <span id="firstNumber"></span></div>
+    <div id="valueDisplay">Hata Sayısı: 0, Pas Sayısı: 0</div>
 
     <script>
         let previousNumbers = [];
@@ -142,7 +148,7 @@
         let firstNumber = Math.floor(Math.random() * (51 - 2)) + 2; // 2 ile 101 arasında rastgele sayı
         previousNumbers.push(firstNumber);
 
-        document.getElementById('output').innerHTML = `Oyun başladı! İlk sayı: ${firstNumber}`;
+        document.getElementById('firstNumber').textContent = firstNumber;
 
         document.getElementById('myForm').onsubmit = function (event) {
             event.preventDefault();
@@ -190,9 +196,7 @@
                 document.getElementById('output').innerHTML += '<p style="color:red;">Her pas için hata sayısı bir arttı!</p>';
             }
 
-
             document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
-
 
             if (hataSayisi >= 3) {
                 endGame();
