@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="tr">
+<header>
+    <img src="Zihinmat.jpg" alt="Zihinmat Logo" id="logo">
+</header>
 
 <head>
     <meta charset="UTF-8">
@@ -10,9 +13,42 @@
     <h1>
         Zihinmat'a Hoşgeldiniz
     </h1>
-    <img src="Zihinmat.jpg"  />  
+
 </body>
 <style>
+    #logo {
+        max-width: 100%;
+        /* Ekrana sığması için */
+        height: auto;
+        /* Oranlarını korur */
+        display: block;
+        margin: 0 auto;
+    }
+
+    #logo {
+        width: 80%;
+        /* Logonun genişliği ekranın %80'i kadar olur */
+        max-width: 400px;
+        /* Masaüstü için maksimum genişlik */
+        height: auto;
+        /* Oranları korur */
+        margin: 0 auto;
+    }
+
+    header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    #logo {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        margin: 0;
+    }
+
     h1 {
         color: #333;
     }
@@ -165,7 +201,7 @@
 
         function endGame() {
             document.getElementById('output').innerHTML += '<p style="color:red;">Oyun Bitti!</p>';
-                        document.getElementById('myForm').reset();
+            document.getElementById('myForm').reset();
             document.getElementById('numberInput').disabled = true;
             document.getElementById('passButton').disabled = true;
 
