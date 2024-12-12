@@ -131,6 +131,10 @@
 
     <h1>Zihinmat'a Hoşgeldiniz</h1>
 
+    <div id="output" aria-live="polite">Oyun başladı! İlk sayı: <span id="firstNumber"></span></div>
+
+    <h2>Lütfen 1 ile 101 arasında bir sayı girniz.</h2>
+
     <form id="myForm">
         <label for="numberInput">Sayı Girin:</label>
         <input type="number" id="numberInput" name="numberInput" required>
@@ -138,8 +142,8 @@
         <button type="button" id="passButton">Pas</button>
     </form>
 
-    <h2>Sonuç:</h2>
-    <div id="output" aria-live="polite">Oyun başladı! İlk sayı: <span id="firstNumber"></span></div>
+    <h3>Sonuç:</h3>
+    
     <div id="valueDisplay">Hata Sayısı: 0, Pas Sayısı: 0</div>
 
     <script>
