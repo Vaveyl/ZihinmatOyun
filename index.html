@@ -143,10 +143,11 @@
     </form>
 
     <h3>Sonuç:</h3>
-    
+
     <div id="valueDisplay">Hata Sayısı: 0, Pas Sayısı: 0</div>
 
     <script>
+
         let previousNumbers = [];
         let hataSayisi = 0;
         let pasSayisi = 0;
@@ -161,31 +162,53 @@
             const newNumber = parseFloat(document.getElementById('numberInput').value);
             let resultMessage = '';
 
-            // Kullanıcı girişi kontrolü
+
+
+            // Listeyi temizle
+            newNumbersBolenler = [];
+
             if (newNumber < 2 || newNumber > 101) {
                 hataSayisi += 1;
-                resultMessage = `${newNumber}, 2 ile 101 arasında bir sayı olmalı! Hata sayısı: ${hataSayisi}`;
+                resultMessage = `${newNumber}, 1 ile 101 arasında bir sayı olmalı! Hata sayısı: ${hataSayisi}`;
             } else if (previousNumbers.includes(newNumber)) {
                 hataSayisi += 1;
                 resultMessage = `${newNumber}, daha önce girilmiş. Hata sayısı: ${hataSayisi}`;
             } else {
-                previousNumbers.push(newNumber);
-
-                if (previousNumbers.length > 1) {
-                    const previousNumber = previousNumbers[previousNumbers.length - 2];
-                    if (newNumber % previousNumber === 0) {
-                        resultMessage = `${newNumber}, ${previousNumber}'in katıdır.`;
-                    } else if (previousNumber % newNumber === 0) {
-                        resultMessage = `${newNumber}, ${previousNumber}'in bölenidir.`;
-                    } else {
-                        resultMessage = `${newNumber}, ne ${previousNumber}'in katı ne de bölenidir.`;
-                        hataSayisi += 1;
+                // Yeni sayının bölen ve katlarını hesapla
+                for (let i = 2; i <= 101; i++) {
+                    if (i !== newNumber && (newNumber % i === 0 || i % newNumber === 0)) {
+                        newNumbersBolenler.push(i);
                     }
+                }
+
+                // `previousNumbers` kümesinde olmayanları filtrele
+                const yeniSayilar = newNumbersBolenler.filter(num => !previousNumbers.includes(num));
+
+                if (yeniSayilar.length === 0) {
+                    resultMessage = `${newNumber}, Başka yeni böleni veya katı yok. Kazandınız!!!`;
+                    endGame();
                 } else {
-                    resultMessage = `Bu ilk giriş: ${newNumber}`;
+                    resultMessage = `Yeni bölen veya katlar: ${yeniSayilar.join(', ')}`;
+
+
+                    if (previousNumbers.length > 1) {
+                        const previousNumber = previousNumbers[previousNumbers.length - 1];
+                        if (newNumber % previousNumber === 0) {
+                            resultMessage = `${newNumber}, ${previousNumber}'in katıdır.`;
+                            previousNumbers.push(newNumber);
+                        } else if (previousNumber % newNumber === 0) {
+                            resultMessage = `${newNumber}, ${previousNumber}'in bölenidir.`;
+                            previousNumbers.push(newNumber);
+                        } else {
+                            resultMessage = `${newNumber}, ne ${previousNumber}'in katı ne de bölenidir.`;
+                            hataSayisi += 1;
+                        }
+                    } else {
+                        resultMessage = `Bu ilk giriş: ${newNumber}`;
+                        previousNumbers.push(newNumber);
+                    }
                 }
             }
-
             document.getElementById('output').innerHTML += `<p>${resultMessage}</p>`;
             document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
 
@@ -196,6 +219,10 @@
 
         document.getElementById('passButton').onclick = function () {
             pasSayisi += 1;
+            const newPassNumber = Math.floor(Math.random() * (51 - 1)) + 1;
+            previousNumbers.push(newPassNumber);
+            document.getElementById('output').innerHTML += `<p>Yeni pas sayısı: ${newPassNumber} eklendi.</p>`;
+
             if (pasSayisi > 3) {
                 hataSayisi += 1;
                 document.getElementById('output').innerHTML += '<p style="color:red;">Her pas için hata sayısı bir arttı!</p>';
@@ -216,7 +243,7 @@
 
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);
+            }, 5000);
         }
     </script>
 </body>
