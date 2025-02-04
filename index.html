@@ -1,251 +1,372 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zihinmat</title>
-    <style>
-        /* Genel Sayfa Stilleri */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 10px;
-            /* Mobil cihazlar için boşluk */
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zihinmat Çok Oyunculu - Zamanlı Tur</title>
+  <style>
+    /* Genel Sayfa Stilleri */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 10px;
+      box-sizing: border-box;
+    }
 
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      width: 100%;
+    }
 
-        /* Logo Stilleri */
-        #logo {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 10 auto 20px auto;
+    h1, h2, h3 {
+      text-align: center;
+      color: #333;
+    }
 
-        }
+    /* Logo Stilleri */
+    #logo {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 10px auto 20px auto;
+    }
 
-        header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            width: 100%;
-        }
+    /* Form Stilleri */
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
 
-        /* Form Stilleri */
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-        }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
 
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      width: 48%;
+    }
 
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
+    button:hover {
+      background-color: #218838;
+    }
 
-            width: 48%;
-        }
+    #output {
+      background-color: #e9ecef;
+      padding: 15px;
+      border-radius: 4px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      overflow-wrap: break-word;
+    }
 
-        button:hover {
-            background-color: #218838;
-        }
+    #valueDisplay {
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
 
-        #output {
-            background-color: #e9ecef;
-            padding: 15px;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            overflow-wrap: break-word;
-        }
+    #currentPlayer {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    #timerDisplay {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #d63333;
+    }
 
-        #valueDisplay {
-            font-weight: bold;
-            margin-top: 10px;
-            text-align: center;
-        }
+    /* Oyuncu Sayısı Seçim Formu */
+    #playerSelect {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
 
-        /* Mobil Uyum için Media Query */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 20px;
-            }
-
-            button {
-                width: 100%;
-                margin: 5px 0;
-            }
-
-            form {
-                padding: 15px;
-            }
-        }
-    </style>
+    /* Mobil Uyum için Media Query */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      button {
+        width: 100%;
+        margin: 5px 0;
+      }
+      form, #playerSelect {
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <img src="Zihinmat.jpg" alt="Zihinmat Logo" id="logo">
-    </header>
+  <!-- Üst Kısımda Logo -->
+  <header>
+    <img src="Zihinmat.jpg" alt="Zihinmat Logo" id="logo">
+  </header>
 
-    <h1>Zihinmat'a Hoşgeldiniz</h1>
+  <h1>Zihinmat'a Hoşgeldiniz</h1>
 
-    <div id="output" aria-live="polite">Oyun başladı! İlk sayı: <span id="firstNumber"></span></div>
-
-    <h2>Lütfen 1 ile 101 arasında bir sayı girniz.</h2>
-
-    <form id="myForm">
-        <label for="numberInput">Sayı Girin:</label>
-        <input type="number" id="numberInput" name="numberInput" required>
-        <button type="submit">Gönder</button>
-        <button type="button" id="passButton">Pas</button>
+  <!-- Oyuncu Sayısı Seçim Alanı -->
+  <div id="playerSelect">
+    <h2>Kaç oyunculu oynanacak?</h2>
+    <form id="playerForm">
+      <label for="playersCountInput">Oyuncu Sayısı (En az 1):</label>
+      <input type="number" id="playersCountInput" name="playersCountInput" min="1" required>
+      <button type="submit">Başla</button>
     </form>
+  </div>
 
+  <!-- Oyun Alanı (oyuncu sayısı belirlendikten sonra gösterilecek) -->
+  <div id="gameArea" style="display:none;">
+    <div id="output" aria-live="polite">Oyun başladı! İlk sayı: <span id="firstNumber"></span></div>
+    <div id="currentPlayer"></div>
+    <div id="timerDisplay"></div>
+    <h2>Lütfen 2 ile 101 arasında bir sayı giriniz.</h2>
+    <form id="myForm">
+      <label for="numberInput">Sayı Girin:</label>
+      <input type="number" id="numberInput" name="numberInput" required>
+      <button type="submit">Gönder</button>
+      <button type="button" id="passButton">Pas</button>
+    </form>
     <h3>Sonuç:</h3>
+    <div id="valueDisplay"></div>
+  </div>
 
-    <div id="valueDisplay">Hata Sayısı: 0, Pas Sayısı: 0</div>
+  <script>
+    // Oyuncu seçimi için değişkenler
+    let players = []; // Her oyuncu için { hata: 0, pas: 0 }
+    let currentPlayerIndex = 0;
+    let totalPlayers = 0;
 
-    <script>
+    // Zamanlayıcı değişkenleri
+    const TURN_TIME = 5; // saniye
+    let remainingTime = TURN_TIME;
+    let turnTimerInterval;  // her saniye güncelleme için interval
+    let turnTimeout;        // tur bitişi için setTimeout
 
-        let previousNumbers = [];
-        let hataSayisi = 0;
-        let pasSayisi = 0;
-        let firstNumber = Math.floor(Math.random() * (51 - 2)) + 2; // 2 ile 101 arasında rastgele sayı
-        previousNumbers.push(firstNumber);
+    // Oyun genel değişkenleri (ortak oyun durumu)
+    let previousNumbers = [];
+    let firstNumber = Math.floor(Math.random() * 50) + 2; // 2 ile 51 arasından rastgele sayı
+    previousNumbers.push(firstNumber);
 
-        document.getElementById('firstNumber').textContent = firstNumber;
+    // DOM elemanları
+    const playerForm = document.getElementById('playerForm');
+    const playersCountInput = document.getElementById('playersCountInput');
+    const playerSelectDiv = document.getElementById('playerSelect');
+    const gameArea = document.getElementById('gameArea');
+    const firstNumberSpan = document.getElementById('firstNumber');
+    const currentPlayerDiv = document.getElementById('currentPlayer');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const outputDiv = document.getElementById('output');
+    const valueDisplay = document.getElementById('valueDisplay');
 
-        document.getElementById('myForm').onsubmit = function (event) {
-            event.preventDefault();
+    firstNumberSpan.textContent = firstNumber;
 
-            const newNumber = parseFloat(document.getElementById('numberInput').value);
-            let resultMessage = '';
+    // Oyuncu sayısı belirlendiğinde
+    playerForm.onsubmit = function(event) {
+      event.preventDefault();
+      totalPlayers = parseInt(playersCountInput.value);
+      if (totalPlayers < 1) {
+        alert("En az 1 oyuncu olmalıdır!");
+        return;
+      }
+      // Her oyuncu için hata ve pas sayısını başlat
+      for (let i = 0; i < totalPlayers; i++) {
+        players.push({ hata: 0, pas: 0 });
+      }
+      // Oyuncu seçim alanını gizle, oyun alanını göster
+      playerSelectDiv.style.display = 'none';
+      gameArea.style.display = 'block';
+      updateCurrentPlayerDisplay();
+      updateValueDisplay();
+      startTurnTimer();
+    };
 
+    // Form ve buton elemanları
+    const myForm = document.getElementById('myForm');
+    const numberInput = document.getElementById('numberInput');
+    const passButton = document.getElementById('passButton');
 
+    // Oyuncu sırasını göster
+    function updateCurrentPlayerDisplay() {
+      currentPlayerDiv.textContent = `Sıra: Oyuncu ${currentPlayerIndex + 1} / ${totalPlayers}`;
+    }
 
-            // Listeyi temizle
-            newNumbersBolenler = [];
+    // Oyuncuların hata ve pas bilgilerini göster
+    function updateValueDisplay() {
+      let displayText = "";
+      players.forEach((player, index) => {
+        displayText += `Oyuncu ${index + 1} - Hata Sayısı: ${player.hata}, Pas Sayısı: ${player.pas}<br>`;
+      });
+      valueDisplay.innerHTML = displayText;
+    }
 
-            if (newNumber < 2 || newNumber > 101) {
-                hataSayisi += 1;
-                resultMessage = `${newNumber}, 1 ile 101 arasında bir sayı olmalı! Hata sayısı: ${hataSayisi}`;
-            } else if (previousNumbers.includes(newNumber)) {
-                hataSayisi += 1;
-                resultMessage = `${newNumber}, daha önce girilmiş. Hata sayısı: ${hataSayisi}`;
-            } else {
-                // Yeni sayının bölen ve katlarını hesapla
-                for (let i = 2; i <= 101; i++) {
-                    if (i !== newNumber && (newNumber % i === 0 || i % newNumber === 0)) {
-                        newNumbersBolenler.push(i);
-                    }
-                }
+    // Zamanlayıcıyı başlat ve kalan süreyi göster
+    function startTurnTimer() {
+      clearTurnTimers();
+      remainingTime = TURN_TIME;
+      timerDisplay.textContent = `Kalan süre: ${remainingTime} saniye`;
+      // Her saniye kalan süreyi güncelle
+      turnTimerInterval = setInterval(() => {
+        remainingTime--;
+        timerDisplay.textContent = `Kalan süre: ${remainingTime} saniye`;
+      }, 1000);
+      // Süre dolduğunda
+      turnTimeout = setTimeout(() => {
+        handleTimeOut();
+      }, TURN_TIME * 1000);
+    }
 
-                // `previousNumbers` kümesinde olmayanları filtrele
-                const yeniSayilar = newNumbersBolenler.filter(num => !previousNumbers.includes(num));
+    // Mevcut turla ilgili tüm zamanlayıcıları temizle
+    function clearTurnTimers() {
+      clearInterval(turnTimerInterval);
+      clearTimeout(turnTimeout);
+    }
 
-                if (yeniSayilar.length === 0) {
-                    resultMessage = `${newNumber}, Başka yeni böleni veya katı yok. Kazandınız!!!`;
-                    endGame();
-                } else {
-                    resultMessage = `Yeni bölen veya katlar: ${yeniSayilar.join(', ')}`;
+    // Süre dolduğunda çalışacak fonksiyon
+    function handleTimeOut() {
+      const currentPlayer = players[currentPlayerIndex];
+      currentPlayer.hata += 1;
+      outputDiv.innerHTML += `<p>Oyuncu ${currentPlayerIndex + 1}: Süreniz doldu! Hata sayınız 1 arttı.</p>`;
+      updateValueDisplay();
+      if (currentPlayer.hata >= 3) {
+        return endGame(`Oyuncu ${currentPlayerIndex + 1}'in hata sayısı 3'e ulaştı.`);
+      }
+      nextPlayer();
+    }
 
+    // Oyunun bitişi
+    function endGame(message) {
+      clearTurnTimers();
+      outputDiv.innerHTML += `<p style="color:red;">${message} Oyun Bitti!</p>`;
+      numberInput.disabled = true;
+      passButton.disabled = true;
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    }
 
-                    if (previousNumbers.length > 1) {
-                        const previousNumber = previousNumbers[previousNumbers.length - 1];
-                        if (newNumber % previousNumber === 0) {
-                            resultMessage = `${newNumber}, ${previousNumber}'in katıdır.`;
-                            previousNumbers.push(newNumber);
-                        } else if (previousNumber % newNumber === 0) {
-                            resultMessage = `${newNumber}, ${previousNumber}'in bölenidir.`;
-                            previousNumbers.push(newNumber);
-                        } else {
-                            resultMessage = `${newNumber}, ne ${previousNumber}'in katı ne de bölenidir.`;
-                            hataSayisi += 1;
-                        }
-                    } else {
-                        resultMessage = `Bu ilk giriş: ${newNumber}`;
-                        previousNumbers.push(newNumber);
-                    }
-                }
-            }
-            document.getElementById('output').innerHTML += `<p>${resultMessage}</p>`;
-            document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
+    // Her tur sonunda sırayı güncelle ve zamanlayıcıyı yeniden başlat
+    function nextPlayer() {
+      clearTurnTimers();
+      currentPlayerIndex = (currentPlayerIndex + 1) % totalPlayers;
+      updateCurrentPlayerDisplay();
+      numberInput.value = "";
+      numberInput.focus();
+      startTurnTimer();
+    }
 
-            if (hataSayisi >= 3) {
-                endGame();
-            }
-        };
+    // Gönder butonunun işleyicisi
+    myForm.onsubmit = function (event) {
+      event.preventDefault();
+      clearTurnTimers(); // Cevap verildiği için zamanlayıcıyı durdur
+      const newNumber = parseFloat(numberInput.value);
+      let resultMessage = "";
+      let newNumbersBolenler = [];
+      const currentPlayer = players[currentPlayerIndex];
 
-        document.getElementById('passButton').onclick = function () {
-            pasSayisi += 1;
-            const newPassNumber = Math.floor(Math.random() * (51 - 1)) + 1;
-            previousNumbers.push(newPassNumber);
-            document.getElementById('output').innerHTML += `<p>Yeni pas sayısı: ${newPassNumber} eklendi.</p>`;
-
-            if (pasSayisi > 3) {
-                hataSayisi += 1;
-                document.getElementById('output').innerHTML += '<p style="color:red;">Her pas için hata sayısı bir arttı!</p>';
-            }
-
-            document.getElementById("valueDisplay").innerText = `Hata Sayısı: ${hataSayisi}, Pas Sayısı: ${pasSayisi}`;
-
-            if (hataSayisi >= 3) {
-                endGame();
-            }
-        };
-
-        function endGame() {
-            document.getElementById('output').innerHTML += '<p style="color:red;">Oyun Bitti!</p>';
-            document.getElementById('myForm').reset();
-            document.getElementById('numberInput').disabled = true;
-            document.getElementById('passButton').disabled = true;
-
-            setTimeout(() => {
-                window.location.reload();
-            }, 5000);
+      if (newNumber < 2 || newNumber > 101) {
+        currentPlayer.hata += 1;
+        resultMessage = `Hata: ${newNumber} 2 ile 101 arasında bir sayı olmalı! (Hata Sayısı: ${currentPlayer.hata})`;
+      } else if (previousNumbers.includes(newNumber)) {
+        currentPlayer.hata += 1;
+        resultMessage = `Hata: ${newNumber} daha önce girilmiş. (Hata Sayısı: ${currentPlayer.hata})`;
+      } else {
+        for (let i = 2; i <= 101; i++) {
+          if (i !== newNumber && (newNumber % i === 0 || i % newNumber === 0)) {
+            newNumbersBolenler.push(i);
+          }
         }
-    </script>
-</body>
+        const yeniSayilar = newNumbersBolenler.filter(num => !previousNumbers.includes(num));
 
+        if (yeniSayilar.length === 0) {
+          resultMessage = `${newNumber}, başka yeni böleni veya katı yok. Tebrikler, Oyuncu ${currentPlayerIndex + 1} kazandı!`;
+          outputDiv.innerHTML += `<p>${resultMessage}</p>`;
+          return endGame(`Oyuncu ${currentPlayerIndex + 1} kazandı!`);
+        } else {
+          const previousNumber = previousNumbers[previousNumbers.length - 1];
+          if (newNumber % previousNumber === 0) {
+            resultMessage = `${newNumber}, ${previousNumber}'in katıdır.`;
+            previousNumbers.push(newNumber);
+          } else if (previousNumber % newNumber === 0) {
+            resultMessage = `${newNumber}, ${previousNumber}'in bölenidir.`;
+            previousNumbers.push(newNumber);
+          } else {
+            resultMessage = `${newNumber}, ne ${previousNumber}'in katı ne de bölenidir.`;
+            currentPlayer.hata += 1;
+          }
+        }
+      }
+
+      outputDiv.innerHTML += `<p>Oyuncu ${currentPlayerIndex + 1}: ${resultMessage}</p>`;
+      updateValueDisplay();
+      if (currentPlayer.hata >= 3) {
+        return endGame(`Oyuncu ${currentPlayerIndex + 1}'in hata sayısı 3'e ulaştı.`);
+      }
+      nextPlayer();
+    };
+
+    // Pas butonunun işleyicisi
+    passButton.onclick = function () {
+      clearTurnTimers();
+      const currentPlayer = players[currentPlayerIndex];
+      currentPlayer.pas += 1;
+      const newPassNumber = Math.floor(Math.random() * 50) + 1; // 1 ile 50 arası
+      previousNumbers.push(newPassNumber);
+      outputDiv.innerHTML += `<p>Oyuncu ${currentPlayerIndex + 1} pas kullandı. Yeni sayı: ${newPassNumber} eklendi.</p>`;
+
+      if (currentPlayer.pas > 3) {
+        currentPlayer.hata += 1;
+        outputDiv.innerHTML += `<p style="color:red;">Oyuncu ${currentPlayerIndex + 1}: Her ek pas için hata sayınız 1 arttı!</p>`;
+      }
+      updateValueDisplay();
+      if (currentPlayer.hata >= 3) {
+        return endGame(`Oyuncu ${currentPlayerIndex + 1}'in hata sayısı 3'e ulaştı.`);
+      }
+      nextPlayer();
+    };
+  </script>
+</body>
 </html>
